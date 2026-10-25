@@ -1,0 +1,32 @@
+{
+  "time_jumps": [
+    "the following morning", "the next morning", "the next day", "later that day", "later that night", "hours later", "days later", "at midnight", "by dawn", "meanwhile", "the next evening",
+    "kesho", "asubuhi iliyofuata", "siku iliyofuata", "baadaye siku hiyo", "usiku huo", "giza ikashika", "majioni", "matime hivi", "baada ya saa chache",
+    "a la mañana siguiente", "al día siguiente", "más tarde", "esa noche", "al amanecer", "después de unas horas",
+    "le lendemain matin", "le jour suivant", "plus tard dans la journée", "cette nuit-là", "au petit matin"
+  ],
+  "motion_verbs": [
+    "walked", "went", "left", "arrived", "reached", "entered", "stepped", "drove", "ran", "returned", "came", "crossed", "turned into", "headed to", "made her way", "made his way",
+    "nikatoka", "nikaingia", "nikafika", "tukafika", "akaingia", "akaondoka", "akaenda", "akarudi", "tukaingia", "tukaondoka", "tukaenda", "akafika", "wakaingia", "walifika",
+    "entró", "salió", "llegó", "fue hacia", "regresó", "cruzó", "entraron", "llegaron",
+    "entra", "sortit", "arriva", "partit", "revint", "traversa"
+  ],
+  "place_cues": [
+    "gate", "office", "house", "home", "room", "kitchen", "hall", "street", "road", "station", "hospital", "school", "court", "market", "church", "hotel", "door", "yard", "car park", "reception",
+    "kwa gate", "kwa office", "nyumbani", "ofisini", "jikoni", "chumbani", "barabarani", "sokoni", "hospitalini", "shuleni", "kanisani", "mlangoni", "nje ya nyumba",
+    "puerta", "casa", "oficina", "calle", "hospital", "escuela", "mercado", "habitación",
+    "porte", "maison", "bureau", "rue", "hôpital", "école", "marché", "chambre"
+  ],
+  "cliffhanger_cues": [
+    "to be continued", "what was that", "who was there", "who could it be", "she froze", "he froze", "the door knocked", "a knock came", "someone knocked", "then the door", "she gasped", "he gasped", "whaat", "what?!", "who?!", "suddenly", "before she could answer", "before he could answer",
+    "nani huyo", "mlango ukagongwa", "mtu akabisha", "ghafla", "akashtuka", "akasema nini", "ni nani", "kabla hajajibu",
+    "¿quién era?", "¿qué fue eso?", "de pronto", "antes de responder",
+    "qui était-ce", "qu'est-ce que", "soudain", "avant de répondre"
+  ],
+  "closure_cues": [
+    "finished the meal", "meal was over", "the interview ended", "interview was over", "the argument ended", "they made peace", "the fight was over", "finally agreed", "said goodbye", "left in silence", "the meeting ended", "they settled it",
+    "chakula kikaisha", "mazungumzo yakaisha", "mahojiano yakaisha", "wakapatana", "vita ikaisha", "wakaagana", "mzozo ukaisha",
+    "terminó la comida", "acabó la entrevista", "se despidieron", "terminó la discusión",
+    "le repas terminé", "l'entretien prit fin", "ils se dirent au revoir", "la dispute prit fin"
+  ]
+}
