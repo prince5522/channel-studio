@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" data-theme="system">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <script src="js/app-shell-behavior.js"></script><meta name="theme-color" content="#101827"><meta name="description" content="Keep every season and story draft together."><title>Story Library — Channel Studio</title><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="css/styles.css"><link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="css/themes.css"></head>
+<body data-page="stories">
+<div class="app-layout">
+<aside class="sidebar"><a class="brand" href="home.html"><span class="brand-mark small-mark">CS</span><span>Channel<span class="brand-accent">Studio</span><small>YOUR CREATOR SPACE</small></span></a><nav class="main-nav" aria-label="Main navigation"><a class="nav-link " href="home.html"><span>⌂</span><b>Home</b></a>
+<a class="nav-link active" href="stories.html"><span>▤</span><b>Stories</b></a>
+<a class="nav-link " href="episodes.html"><span>▥</span><b>Episodes</b></a>
+<a class="nav-link" href="ready-made.html"><span>✍</span><b>Ready-Made Episodes</b></a>
+<a class="nav-link " href="planner.html"><span>◷</span><b>Planner</b></a>
+<a class="nav-link " href="hype.html"><span>↗</span><b>Hype</b></a>
+<a class="nav-link " href="media.html"><span>▣</span><b>Media Library</b></a>
+<a class="nav-link" href="docs.html"><span>📄</span><b>Document Reader</b></a>
+<a class="nav-link " href="channels.html"><span>◎</span><b>Channels</b></a>
+<a class="nav-link" href="complaints.html"><span>⚑</span><b>Complaints</b></a>
+<a class="nav-link" href="reviews.html"><span>★</span><b>Reviews</b></a>
+<a class="nav-link " href="notifications.html"><span>♧</span><b>Alerts</b></a>
+<a class="nav-link " href="backup.html"><span>▣</span><b>Backup</b></a>
+<a class="nav-link " href="settings.html"><span>⚙</span><b>Settings</b></a></nav><div class="sidebar-bottom"><a class="nav-link" href="index.html"><span>↗</span><b>Welcome screen</b></a><p class="small muted">Keep creating. Keep your stories safe.</p></div></aside>
+<div class="main-column"><header class="topbar"><button id="menuToggle" class="icon-button mobile-menu" aria-label="Open menu">☰</button><div><p class="eyebrow">CHANNEL STUDIO</p><p class="topbar-title">Story Library</p></div><div class="topbar-actions"><button id="quickTheme" class="icon-button" aria-label="Toggle theme" title="Toggle theme">◐</button><a class="avatar-link" href="settings.html" aria-label="Settings">CS</a></div></header>
+<main class="page-content page-enter">
+<section class="page-intro"><p class="eyebrow">YOUR LIBRARY</p><h1>Story <span>library</span></h1><p class="muted">Import a PDF or text file. PDF text extraction is included; scanned PDFs may need OCR later.</p></section>
+<section class="panel"><form id="storyForm" class="form-grid"><label>Story / season title<input id="storyTitle" required maxlength="120" placeholder="e.g. The Hidden Promise"></label><label>Season number<input id="storySeason" type="number" min="1" max="999" value="1"></label><label>Genre / category<select id="storyGenre"><option>General</option><option>Romance</option><option>Drama</option><option>Thriller</option><option>Comedy</option><option>Fantasy</option><option>Action</option><option>Inspirational</option><option>Other</option></select></label><label class="full">Short description (optional)<input id="storyDescription" maxlength="240" placeholder="A short note about this season"></label><label>Import file (PDF or text)<input id="storyFile" type="file" accept=".pdf,.txt,.md,text/plain,application/pdf"></label><label class="full">Or paste story text<textarea id="storyText" rows="7" placeholder="Paste your story text here…"></textarea></label><div class="full row-wrap"><button class="button primary" type="submit">Save story</button><button class="button ghost" type="button" id="clearStoryForm">Clear</button></div><p class="small muted full">PDF processing uses PDF.js from a CDN when online. Your saved story text is stored locally in this browser.</p></form></section>
+<section class="section-block"><div class="section-heading"><h2>Season library</h2><span class="pill" id="storyLibraryCount">0 seasons</span></div><label class="search-label">Search your seasons<input id="storySearch" type="search" placeholder="Search by title, genre or text…"></label><div id="storyList" class="story-list"><div class="empty-state">Your library is empty. Import your first story above.</div></div></section><section class="section-block" id="storyReaderPanel" hidden><div class="section-heading"><h2 id="storyReaderTitle">Reading room</h2><div class="row-wrap"><button class="button ghost small-button" id="storyFontDown" type="button">A−</button><button class="button ghost small-button" id="storyFontUp" type="button">A+</button><button class="button ghost small-button" id="closeStoryReader" type="button">Close</button></div></div><p id="storyReaderMeta" class="small muted"></p><article id="storyReaderText" class="story-reading-text"></article></section>
+</main><footer class="app-footer">Made for your stories <span>✦</span> <span class="muted">Local-first • Your content stays yours</span></footer></div></div>
+<div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" crossorigin="anonymous"></script><script src="js/storage.js"></script><script src="js/themes.js"></script><script src="js/transitions.js"></script><script src="js/effects.js"></script><script src="js/notifications.js"></script><script src="js/story-engine.js"></script><script src="js/app.js"></script>
+</body></html>

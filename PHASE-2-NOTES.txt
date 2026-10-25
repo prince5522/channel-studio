@@ -1,0 +1,20 @@
+PHASE 2 READY-MADE EPISODES
+
+1. Open ready-made.html.
+2. Paste one finished episode and save as draft, or import TXT/MD/DOCX files.
+3. Bulk import recognizes markers such as EPISODE 1, EP 2, # Episode 3.
+4. Review all imported titles/numbers/text before saving.
+5. Schedule reminders and use Prepare post to share/copy the episode.
+6. After sending it in WhatsApp yourself, choose Mark posted.
+
+System A stays on episodes.html. System B is on ready-made.html. They use separate data keys/workflows.
+Blank episode names/subtitles remain blank. The display fallback is Episode N.
+
+This is a local-first frontend prototype. It is not yet connected to Supabase/Postgres, a server cron job, FCM/OneSignal, SMS, or an official WhatsApp Channel publishing integration. Therefore:
+- Do not expect guaranteed notifications when the browser is closed.
+- Auto-post is intentionally unavailable rather than pretending it works.
+- Browser local data is not synced across devices.
+
+
+SUPABASE CLOUD UPDATE
+See PHASE-2-SUPABASE-CLOUD-SETUP.txt. Run the SQL schema and publish updated files before expecting online sync. Only System B is wired to Supabase in this update; all other modules remain local.

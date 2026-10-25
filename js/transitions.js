@@ -1,0 +1,1 @@
+document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('a[href]').forEach(a=>{const href=a.getAttribute('href');if(href&&/\.html(?:#.*)?$/.test(href)&&!a.target&& !a.hasAttribute('download'))a.addEventListener('click',()=>{document.body.classList.add('page-leaving')})})});

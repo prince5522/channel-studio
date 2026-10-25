@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en" data-theme="system">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <script src="js/app-shell-behavior.js"></script><meta name="theme-color" content="#101827"><meta name="description" content="Keep a portable copy of your content."><title>Backup & Restore — Channel Studio</title><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="css/styles.css"><link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="css/themes.css"></head>
+<body data-page="backup">
+<div class="app-layout">
+<aside class="sidebar"><a class="brand" href="home.html"><span class="brand-mark small-mark">CS</span><span>Channel<span class="brand-accent">Studio</span><small>YOUR CREATOR SPACE</small></span></a><nav class="main-nav" aria-label="Main navigation"><a class="nav-link " href="home.html"><span>⌂</span><b>Home</b></a>
+<a class="nav-link " href="stories.html"><span>▤</span><b>Stories</b></a>
+<a class="nav-link " href="episodes.html"><span>▥</span><b>Episodes</b></a>
+<a class="nav-link" href="ready-made.html"><span>✍</span><b>Ready-Made Episodes</b></a>
+<a class="nav-link " href="planner.html"><span>◷</span><b>Planner</b></a>
+<a class="nav-link " href="hype.html"><span>↗</span><b>Hype</b></a>
+<a class="nav-link " href="media.html"><span>▣</span><b>Media Library</b></a>
+<a class="nav-link" href="docs.html"><span>📄</span><b>Document Reader</b></a>
+<a class="nav-link " href="channels.html"><span>◎</span><b>Channels</b></a>
+<a class="nav-link" href="complaints.html"><span>⚑</span><b>Complaints</b></a>
+<a class="nav-link" href="reviews.html"><span>★</span><b>Reviews</b></a>
+<a class="nav-link " href="notifications.html"><span>♧</span><b>Alerts</b></a>
+<a class="nav-link active" href="backup.html"><span>▣</span><b>Backup</b></a>
+<a class="nav-link " href="settings.html"><span>⚙</span><b>Settings</b></a></nav><div class="sidebar-bottom"><a class="nav-link" href="index.html"><span>↗</span><b>Welcome screen</b></a><p class="small muted">Keep creating. Keep your stories safe.</p></div></aside>
+<div class="main-column"><header class="topbar"><button id="menuToggle" class="icon-button mobile-menu" aria-label="Open menu">☰</button><div><p class="eyebrow">CHANNEL STUDIO</p><p class="topbar-title">Backup & Restore</p></div><div class="topbar-actions"><button id="quickTheme" class="icon-button" aria-label="Toggle theme" title="Toggle theme">◐</button><a class="avatar-link" href="settings.html" aria-label="Settings">CS</a></div></header>
+<main class="page-content page-enter">
+<section class="page-intro"><p class="eyebrow">YOUR CONTENT, YOUR CONTROL</p><h1>Backup & <span>restore</span></h1><p class="muted">Export stories, episodes, tasks, channels, promotions and preferences into a JSON backup file.</p></section>
+<section class="panel"><h2>Export backup</h2><p class="muted">Save a copy to your device. Keep it somewhere safe. A backup file may contain private writing.</p><button id="exportBackup" class="button primary">Download backup</button></section>
+<section class="panel"><h2>Restore backup</h2><p class="muted">Restoring replaces the current local app data. Export a backup first if you need to keep your current content.</p><label>Select backup file<input id="backupFile" type="file" accept=".json,application/json"></label><button id="restoreBackup" class="button danger">Restore selected backup</button><p id="backupStatus" class="small muted" role="status"></p></section>
+<section class="panel"><h2>Cloud backup</h2><div class="notice info">Cloud backup is planned for the next integration stage. Supabase credentials and database security policies must be configured before enabling it.</div></section>
+</main><footer class="app-footer">Made for your stories <span>✦</span> <span class="muted">Local-first • Your content stays yours</span></footer></div></div>
+<div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+<script src="js/storage.js"></script><script src="js/themes.js"></script><script src="js/transitions.js"></script><script src="js/effects.js"></script><script src="js/notifications.js"></script><script src="js/app.js"></script>
+</body></html>

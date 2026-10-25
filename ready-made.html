@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en" data-theme="system">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <script src="js/app-shell-behavior.js"></script>
+<meta name="theme-color" content="#101827">
+<meta name="description" content="Store ready-made story episodes and manage manual posting reminders.">
+<title>Ready-Made Episodes — Channel Studio</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="css/themes.css">
+<link rel="stylesheet" href="css/ready-made.css">
+</head>
+<body data-page="ready-made">
+<div class="app-layout">
+<aside class="sidebar">
+<a class="brand" href="home.html"><span class="brand-mark small-mark">CS</span><span>Channel<span class="brand-accent">Studio</span><small>YOUR CREATOR SPACE</small></span></a>
+<nav class="main-nav" aria-label="Main navigation">
+<a class="nav-link" href="home.html"><span>⌂</span><b>Home</b></a>
+<a class="nav-link" href="stories.html"><span>▤</span><b>Stories</b></a>
+<a class="nav-link" href="episodes.html"><span>▥</span><b>Auto-Splitter</b></a>
+<a class="nav-link active" href="ready-made.html"><span>✍</span><b>Ready-Made Episodes</b></a>
+<a class="nav-link" href="planner.html"><span>◷</span><b>Planner</b></a>
+<a class="nav-link" href="hype.html"><span>↗</span><b>Hype</b></a>
+<a class="nav-link" href="channels.html"><span>◎</span><b>Channels</b></a>
+<a class="nav-link" href="notifications.html"><span>♧</span><b>Alerts</b></a>
+<a class="nav-link" href="backup.html"><span>▣</span><b>Backup</b></a>
+<a class="nav-link" href="settings.html"><span>⚙</span><b>Settings</b></a>
+</nav><div class="sidebar-bottom"><a class="nav-link" href="index.html"><span>↗</span><b>Welcome screen</b></a><p class="small muted">Your words. Your schedule. Your choice.</p></div>
+</aside>
+<div class="main-column">
+<header class="topbar"><button id="menuToggle" class="icon-button mobile-menu" aria-label="Open menu">☰</button><div><p class="eyebrow">AUTHOR WORKSPACE</p><p class="topbar-title">Ready-Made Episodes</p></div><div class="topbar-actions"><button id="quickTheme" class="icon-button" aria-label="Toggle theme" title="Toggle theme">◐</button><a class="avatar-link" href="settings.html" aria-label="Settings">CS</a></div></header>
+<main class="page-content page-enter">
+<section class="page-intro"><p class="eyebrow">SYSTEM B · INDEPENDENT FROM AUTO-SPLITTER</p><h1>My Ready-Made <span>Episodes</span></h1><p class="muted">Paste or upload finished episodes. Titles and subtitles stay exactly as you provide them—nothing is AI-renamed or rewritten.</p></section>
+<div class="rm-tabs" role="tablist" aria-label="Episode system"><a class="rm-tab" href="episodes.html">System A · Auto-Splitter</a><span class="rm-tab active" aria-current="page">System B · Ready-Made</span></div>
+<section class="panel">
+<div class="section-heading"><div><p class="eyebrow">ADD ONE OR MANY</p><h2>Add ready-made episodes</h2></div><span class="rm-badge" id="cloudStatus" data-online="false">Connecting to cloud…</span></div>
+<form id="rmForm" class="form-grid">
+<label>Season number<input id="rmSeason" type="number" min="1" value="1" required></label>
+<label>Episode number<input id="rmNumber" type="number" min="1" placeholder="Auto-assign next" ></label>
+<label class="full">Episode title (optional)<input id="rmTitle" type="text" maxlength="180" placeholder="Keep blank if you want"></label>
+<label class="full">Subtitle (optional)<input id="rmSubtitle" type="text" maxlength="240" placeholder="Your subtitle, if any"></label>
+<label class="full">Episode text <span class="muted">(required)</span><textarea id="rmText" rows="9" required placeholder="Paste your finished episode here. The app stores your wording as-is."></textarea></label>
+<div class="rm-metrics full"><span id="rmWordCount">0 words</span><span id="rmReadTime">0 min read</span><span id="rmFloor">Ready-made episodes are not split or expanded.</span></div>
+<div class="full rm-actions"><button class="button primary" type="submit">Save episode as draft</button><button class="button ghost" type="button" id="rmClear">Clear form</button></div>
+</form>
+</section>
+<section class="panel">
+<div class="section-heading"><div><p class="eyebrow">FILE IMPORT</p><h2>Upload .txt, .md or .docx</h2></div></div>
+<p class="muted">One file can contain one episode or a document with markers such as “EPISODE 1”, “EP 2”, or “# Episode 3”. Check the preview before saving.</p>
+<div class="form-grid">
+<label class="full">Choose one or more files<input id="rmFiles" type="file" accept=".txt,.md,.docx,text/plain,text/markdown,application/vnd.openxmlformats-officedocument.wordprocessingml.document" multiple></label>
+<label>Default season for imported episodes<input id="rmImportSeason" type="number" min="1" value="1"></label>
+<div class="full rm-actions"><button class="button ghost" type="button" id="rmParseFiles">Read files and preview</button><button class="button primary" type="button" id="rmSaveImport" disabled>Save previewed episodes</button></div>
+</div>
+<div id="rmImportPreview" class="rm-import-preview"><div class="empty-state">Choose files to preview imported episodes.</div></div>
+<p class="small muted">DOCX reading uses a browser library and needs internet access. If it fails, save the document as .txt or paste the text.</p>
+</section>
+<section class="panel">
+<div class="section-heading"><div><p class="eyebrow">POSTING ASSISTANT</p><h2>Posting preferences</h2></div></div>
+<div class="rm-preference-grid">
+<label class="rm-toggle"><input id="rmNotifyToggle" type="checkbox" checked><span><b>Browser reminders</b><small>Ask permission for notifications when you enable them.</small></span></label>
+<label class="rm-toggle"><input id="rmAutoPostToggle" type="checkbox" disabled><span><b>Auto-post to WhatsApp Channel</b><small>Unavailable in this static PWA. Use manual handoff; do not rely on a fake auto-post switch.</small></span></label>
+</div>
+<div class="rm-note"><b>Scheduling truth:</b> reminders are best-effort while the app/browser can run or when you next open it. GitHub Pages alone cannot guarantee background push delivery. WhatsApp Channel publishing is manual in this build: the app prepares/shares the text, then you choose your Channel and press Send.</div>
+</section>
+<section class="section-block">
+<div class="section-heading"><div><p class="eyebrow">SEPARATE SYSTEM B LIBRARY</p><h2>My Ready-Made Episodes</h2></div><div class="rm-list-tools"><select id="rmFilterSeason" aria-label="Filter by season"><option value="all">All seasons</option></select><select id="rmFilterStatus" aria-label="Filter by status"><option value="all">All statuses</option><option value="draft">Draft</option><option value="scheduled">Scheduled</option><option value="posted">Posted</option></select></div></div>
+<div id="rmEpisodeList" class="rm-episode-list"><div class="empty-state">No ready-made episodes saved yet.</div></div>
+</section>
+<section class="panel">
+<div class="section-heading"><div><p class="eyebrow">CADENCE HELPER</p><h2>Plan a posting rhythm</h2></div></div>
+<div class="form-grid">
+<label>Post frequency<select id="rmCadence"><option value="2">2 times per week</option><option value="1">Once per week</option><option value="3">3 times per week</option><option value="7">Daily</option></select></label>
+<label>First posting date and time<input id="rmCadenceStart" type="datetime-local"></label>
+<div class="full"><button class="button ghost" id="rmApplyCadence" type="button">Schedule remaining drafts</button></div>
+</div><p class="small muted">This assigns dates to draft episodes evenly. It creates reminders only; it does not publish automatically.</p>
+</section>
+</main><footer class="app-footer">Made for your stories <span>✦</span> <span class="muted">Ready-made episodes stay independent from the splitter.</span></footer>
+</div></div>
+<div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+<script src="js/storage.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/supabase-cloud.js"></script><script src="js/themes.js"></script><script src="js/transitions.js"></script><script src="js/effects.js"></script><script src="js/notifications.js"></script><script src="js/app.js"></script>
+<script src="https://unpkg.com/mammoth@1.8.0/mammoth.browser.min.js"></script>
+<script src="js/ready-made.js"></script>
+</body></html>

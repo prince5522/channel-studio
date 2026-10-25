@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en" data-theme="system">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <script src="js/app-shell-behavior.js"></script><meta name="theme-color" content="#101827"><meta name="description" content="Prepare promotions and track where you plan to share them."><title>Hype & Cross-Posting — Channel Studio</title><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="css/styles.css"><link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="css/themes.css"></head>
+<body data-page="hype">
+<div class="app-layout">
+<aside class="sidebar"><a class="brand" href="home.html"><span class="brand-mark small-mark">CS</span><span>Channel<span class="brand-accent">Studio</span><small>YOUR CREATOR SPACE</small></span></a><nav class="main-nav" aria-label="Main navigation"><a class="nav-link " href="home.html"><span>⌂</span><b>Home</b></a>
+<a class="nav-link " href="stories.html"><span>▤</span><b>Stories</b></a>
+<a class="nav-link " href="episodes.html"><span>▥</span><b>Episodes</b></a>
+<a class="nav-link" href="ready-made.html"><span>✍</span><b>Ready-Made Episodes</b></a>
+<a class="nav-link " href="planner.html"><span>◷</span><b>Planner</b></a>
+<a class="nav-link active" href="hype.html"><span>↗</span><b>Hype</b></a>
+<a class="nav-link " href="media.html"><span>▣</span><b>Media Library</b></a>
+<a class="nav-link" href="docs.html"><span>📄</span><b>Document Reader</b></a>
+<a class="nav-link " href="channels.html"><span>◎</span><b>Channels</b></a>
+<a class="nav-link" href="complaints.html"><span>⚑</span><b>Complaints</b></a>
+<a class="nav-link" href="reviews.html"><span>★</span><b>Reviews</b></a>
+<a class="nav-link " href="notifications.html"><span>♧</span><b>Alerts</b></a>
+<a class="nav-link " href="backup.html"><span>▣</span><b>Backup</b></a>
+<a class="nav-link " href="settings.html"><span>⚙</span><b>Settings</b></a></nav><div class="sidebar-bottom"><a class="nav-link" href="index.html"><span>↗</span><b>Welcome screen</b></a><p class="small muted">Keep creating. Keep your stories safe.</p></div></aside>
+<div class="main-column"><header class="topbar"><button id="menuToggle" class="icon-button mobile-menu" aria-label="Open menu">☰</button><div><p class="eyebrow">CHANNEL STUDIO</p><p class="topbar-title">Hype & Cross-Posting</p></div><div class="topbar-actions"><button id="quickTheme" class="icon-button" aria-label="Toggle theme" title="Toggle theme">◐</button><a class="avatar-link" href="settings.html" aria-label="Settings">CS</a></div></header>
+<main class="page-content page-enter">
+<section class="page-intro"><p class="eyebrow">SPREAD THE WORD</p><h1>Hype & <span>cross-posting</span></h1><p class="muted">Prepare a post from another channel for sharing on yours, or vice versa. Publishing stays manual unless a supported channel integration becomes available.</p></section>
+<section class="panel"><form id="hypeForm" class="form-grid"><label class="full">Promotion title<input id="hypeTitle" required maxlength="120" placeholder="e.g. Tonight's episode"></label><label>Source channel<input id="hypeSource" placeholder="Channel name or link"></label><label>Destination channel<input id="hypeDestination" placeholder="Your channel name or link"></label><label class="full">Post or source link<input id="hypeLink" type="url" placeholder="https://…"></label><label class="full">Advertisement post / hype message<textarea id="hypeCaption" rows="5" maxlength="3000" placeholder="🔥 Promote a channel, story, product, or new episode…"></textarea></label>
+<label class="full">Attach image or video from Media Library<select id="hypeMediaSelect"><option value="">No media attached</option></select><small class="muted">Upload files first in Media Library. Attachment is saved on this device.</small></label><div class="full" id="hypeMediaPreview" hidden></div><div class="full row-wrap"><button class="button ghost" type="button" id="previewAd">Preview advertisement</button><button class="button ghost" type="button" id="copyAd">Copy advertisement</button></div><div class="full panel" id="adPreview" hidden><p class="eyebrow">ADVERTISEMENT PREVIEW</p><h3 id="adPreviewTitle">Your promotion</h3><p id="adPreviewCaption" class="muted"></p><p id="adPreviewLink" class="small"></p></div><label>Status<select id="hypeStatus"><option value="draft">Draft</option><option value="ready">Ready to post</option><option value="posted">Posted manually</option></select></label><div class="full"><button class="button primary" type="submit">Save promotion</button></div></form></section>
+<section class="section-block"><div class="section-heading"><h2>Saved promotions</h2></div><div id="hypeList" class="stack-list"></div></section>
+</main><footer class="app-footer">Made for your stories <span>✦</span> <span class="muted">Local-first • Your content stays yours</span></footer></div></div>
+<div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+<script src="js/storage.js"></script><script src="js/themes.js"></script><script src="js/transitions.js"></script><script src="js/effects.js"></script><script src="js/notifications.js"></script><script src="js/app.js"></script><script src="js/media-attach.js"></script>
+</body></html>

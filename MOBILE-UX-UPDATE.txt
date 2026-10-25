@@ -1,0 +1,8 @@
+CHANNEL STUDIO — MOBILE UX UPDATE
+
+Changes:
+- Restricted browser page zoom on mobile using viewport settings and touch-action. Normal scrolling remains available.
+- Added app-shell behavior so returning to the app after it was backgrounded/exited returns to the welcome screen. Internal navigation between Channel Studio pages is preserved.
+- Increased mobile form-control text to 16px to prevent automatic zoom when tapping small inputs.
+
+Note: browser/OS accessibility settings may override page zoom restrictions. Test on the installed PWA and on the GitHub Pages URL. This update does not alter Supabase credentials or database schema.

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en" data-theme="system">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <script src="js/app-shell-behavior.js"></script><meta name="theme-color" content="#101827"><meta name="description" content="Schedule reminders for your publishing routine."><title>Planner — Channel Studio</title><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="css/styles.css"><link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="css/themes.css"></head>
+<body data-page="planner">
+<div class="app-layout">
+<aside class="sidebar"><a class="brand" href="home.html"><span class="brand-mark small-mark">CS</span><span>Channel<span class="brand-accent">Studio</span><small>YOUR CREATOR SPACE</small></span></a><nav class="main-nav" aria-label="Main navigation"><a class="nav-link " href="home.html"><span>⌂</span><b>Home</b></a>
+<a class="nav-link " href="stories.html"><span>▤</span><b>Stories</b></a>
+<a class="nav-link " href="episodes.html"><span>▥</span><b>Episodes</b></a>
+<a class="nav-link" href="ready-made.html"><span>✍</span><b>Ready-Made Episodes</b></a>
+<a class="nav-link active" href="planner.html"><span>◷</span><b>Planner</b></a>
+<a class="nav-link " href="hype.html"><span>↗</span><b>Hype</b></a>
+<a class="nav-link " href="media.html"><span>▣</span><b>Media Library</b></a>
+<a class="nav-link" href="docs.html"><span>📄</span><b>Document Reader</b></a>
+<a class="nav-link " href="channels.html"><span>◎</span><b>Channels</b></a>
+<a class="nav-link" href="complaints.html"><span>⚑</span><b>Complaints</b></a>
+<a class="nav-link" href="reviews.html"><span>★</span><b>Reviews</b></a>
+<a class="nav-link " href="notifications.html"><span>♧</span><b>Alerts</b></a>
+<a class="nav-link " href="backup.html"><span>▣</span><b>Backup</b></a>
+<a class="nav-link " href="settings.html"><span>⚙</span><b>Settings</b></a></nav><div class="sidebar-bottom"><a class="nav-link" href="index.html"><span>↗</span><b>Welcome screen</b></a><p class="small muted">Keep creating. Keep your stories safe.</p></div></aside>
+<div class="main-column"><header class="topbar"><button id="menuToggle" class="icon-button mobile-menu" aria-label="Open menu">☰</button><div><p class="eyebrow">CHANNEL STUDIO</p><p class="topbar-title">Planner</p></div><div class="topbar-actions"><button id="quickTheme" class="icon-button" aria-label="Toggle theme" title="Toggle theme">◐</button><a class="avatar-link" href="settings.html" aria-label="Settings">CS</a></div></header>
+<main class="page-content page-enter">
+<section class="page-intro"><p class="eyebrow">PLAN AHEAD</p><h1>Posting <span>planner</span></h1><p class="muted">Create tasks and get reminders. Browser notification delivery depends on permissions and device support.</p></section>
+<section class="panel"><form id="taskForm" class="form-grid"><label class="full">Task title<input id="taskTitle" required maxlength="160" placeholder="Post Season 1, Episode 4"></label><label>Date and time (optional for weekly plans)<input id="taskDate" type="datetime-local"></label><label>Reminder type<select id="taskType"><option value="post">Post reminder</option><option value="hype">Hype reminder</option><option value="backup">Backup reminder</option><option value="other">Other task</option></select></label>
+<label>Priority<select id="taskPriority"><option value="normal">Normal</option><option value="high">High priority</option><option value="low">Low priority</option></select></label>
+<label>Alert me<select id="taskReminder"><option value="0">At scheduled time</option><option value="5">5 minutes before</option><option value="10">10 minutes before</option><option value="30">30 minutes before</option><option value="60">1 hour before</option><option value="1440">1 day before</option></select><span class="small muted">For dated tasks, keep this page open for in-app checks or enable browser notifications.</span></label><fieldset class="full day-picker"><legend>Weekly schedule</legend><p class="small muted">Choose one or more days. Leave all unchecked for a one-time dated reminder.</p><div class="weekday-grid"><label class="weekday-option"><input type="checkbox" name="taskDay" value="Monday"><span>Mon</span></label><label class="weekday-option"><input type="checkbox" name="taskDay" value="Tuesday"><span>Tue</span></label><label class="weekday-option"><input type="checkbox" name="taskDay" value="Wednesday"><span>Wed</span></label><label class="weekday-option"><input type="checkbox" name="taskDay" value="Thursday"><span>Thu</span></label><label class="weekday-option"><input type="checkbox" name="taskDay" value="Friday"><span>Fri</span></label><label class="weekday-option"><input type="checkbox" name="taskDay" value="Saturday"><span>Sat</span></label><label class="weekday-option"><input type="checkbox" name="taskDay" value="Sunday"><span>Sun</span></label></div><label class="repeat-option"><input id="taskRepeat" type="checkbox"> Repeat every selected week</label></fieldset>
+<label class="full">Attach image or video (optional)<select id="taskMediaSelect"><option value="">No media attached</option></select><span class="small muted">Upload files first in Media Library. Files stay on this device.</span></label><div id="taskMediaPreview" class="full task-media-preview" hidden></div>
+<label class="full">Notes (optional)<textarea id="taskNotes" rows="2" placeholder="Caption, episode number or other details…"></textarea></label><div class="full row-wrap"><button class="button primary" type="submit">Save reminder</button><button class="button ghost" type="button" id="enableNotifications">Enable notifications</button></div><p class="small muted full" id="notificationStatus">Notifications have not been enabled.</p></form></section>
+<section class="section-block stage4-daily" aria-labelledby="dailyAgendaTitle">
+<div class="section-heading"><div><p class="eyebrow">STAGE 4 · TODAY</p><h2 id="dailyAgendaTitle">Daily agenda</h2></div><span id="agendaDate" class="small muted"></span></div>
+<div id="dailyAgenda" class="daily-agenda" aria-live="polite"><p class="muted">Loading today’s agenda…</p></div>
+</section>
+<section class="section-block stage4-progress" aria-labelledby="progressTitle">
+<div class="section-heading"><div><p class="eyebrow">STAGE 4 · CREATOR PROGRESS</p><h2 id="progressTitle">Weekly progress</h2></div><span id="progressPercent" class="progress-percent">0%</span></div>
+<div class="progress-track stage4-progress-track"><span id="progressBar" style="width:0%"></span></div>
+<div class="progress-goal-row"><p id="progressSummary" class="small muted">Set a weekly target to track your publishing routine.</p><label class="goal-control">Weekly task goal <input id="weeklyGoal" type="number" min="1" max="200" value="5"></label><button id="saveGoal" class="button ghost" type="button">Save goal</button></div>
+<div class="progress-stats" id="progressStats"></div>
+</section>
+<section class="section-block planner-stage3" aria-labelledby="weekCalendarTitle"><div class="section-heading"><div><p class="eyebrow">STAGE 3 · WEEK AT A GLANCE</p><h2 id="weekCalendarTitle">Your weekly calendar</h2></div><div class="row-wrap"><button class="button ghost" type="button" id="weekPrev">← Previous</button><button class="button ghost" type="button" id="weekToday">This week</button><button class="button ghost" type="button" id="weekNext">Next →</button></div></div><p class="muted small" id="weekRange">Your plans, grouped by weekday.</p><div class="week-summary" id="weekSummary"><span>Loading weekly summary…</span></div><div class="week-calendar" id="weekCalendar" aria-live="polite"></div><div class="row-wrap calendar-tools"><button class="button secondary" type="button" id="exportWeek">Download this week’s plan</button><button class="button ghost" type="button" id="showTodayTasks">Show today’s tasks</button></div></section>
+<section class="section-block"><div class="section-heading"><h2>Weekly schedule & tasks</h2><select id="taskFilter" class="compact-select"><option value="all">All tasks</option><option value="pending">Pending</option><option value="done">Completed</option></select></div><div id="taskList" class="stack-list"></div></section>
+</main><footer class="app-footer">Made for your stories <span>✦</span> <span class="muted">Local-first • Your content stays yours</span></footer></div></div>
+<div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+<script src="js/storage.js"></script><script src="js/themes.js"></script><script src="js/transitions.js"></script><script src="js/effects.js"></script><script src="js/notifications.js"></script><script src="js/app.js"></script><script src="js/planner-media.js"></script><script src="js/planner-stage3.js"></script><script src="js/planner-stage4.js"></script>
+</body></html>

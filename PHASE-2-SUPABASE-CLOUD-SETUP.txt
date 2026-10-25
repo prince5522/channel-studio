@@ -1,0 +1,26 @@
+CHANNEL STUDIO — SUPABASE CLOUD SETUP
+
+WHAT THIS UPDATE DOES
+- Keeps the existing design and pages.
+- Adds Supabase JS and the supplied project URL/publishable key to the Ready-Made Episodes page.
+- Creates an anonymous Supabase session in the background; no login screen is shown.
+- Syncs System B (Ready-Made Episodes) to Supabase using the signed-in/anonymous user's identity and Row Level Security.
+- Keeps a local browser copy if the cloud connection fails.
+- Shows a cloud status label on ready-made.html.
+
+SETUP — DO THESE STEPS BEFORE EXPECTING CLOUD SAVING
+1. In Supabase, open SQL Editor -> New query.
+2. Open PHASE-2-SUPABASE-SCHEMA.sql from this ZIP, copy the entire file, paste it into SQL Editor and click Run.
+3. Confirm Authentication -> Sign In / Providers -> Anonymous sign-ins is enabled.
+4. Publish the contents of the WhatsApp-Channel-Manager folder to the same GitHub Pages repository, replacing old files while preserving your repository path.
+5. Open ready-made.html from the live GitHub Pages site while online. Wait for “Cloud connected ✓”.
+6. Save a harmless test episode, refresh the page, and confirm it remains listed. Then open Supabase Table Editor -> episodes and confirm a row exists.
+
+SECURITY AND LIMITATIONS
+- The publishable key is intended for frontend use; it is not a secret. Never add an sb_secret_ key or service_role key to this ZIP or GitHub.
+- RLS restricts episode rows to the current Supabase identity. Anonymous identity is tied to the browser session; clearing browser data or switching devices can create a different identity and will not automatically grant access to the old identity's rows.
+- This version does not provide identity recovery or a hidden permanent owner credential. If cross-device owner access is needed, add a secure sign-in/recovery mechanism or a server-side owner API later.
+- This sync currently covers System B Ready-Made Episodes only. Other app areas (stories, planner, media, channels, settings, System A) remain local until separately connected.
+- This is a code update, not a live-device test. Cloud sync is not verified until the user completes the SQL setup and tests it on the published site.
+- The Supabase JS CDN requires internet access. If it fails, the app keeps its local copy and the status label explains that cloud setup is needed.
+- WhatsApp Channel posting remains manual. Local browser reminders are not guaranteed while the app is closed.

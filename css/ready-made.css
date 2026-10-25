@@ -1,0 +1,38 @@
+/* Ready-made episodes page */
+.rm-tabs { display:flex; gap:8px; flex-wrap:wrap; margin:0 0 18px; }
+.rm-tab { display:inline-flex; align-items:center; padding:10px 14px; border:1px solid var(--line); border-radius:14px; color:var(--muted); text-decoration:none; background:var(--panel); }
+.rm-tab.active { color:var(--text); background:var(--soft); border-color:var(--accent); font-weight:700; }
+.rm-badge { font-size:.75rem; border-radius:999px; padding:7px 10px; background:var(--soft); color:var(--accent-strong); }
+.rm-metrics { display:flex; gap:10px; flex-wrap:wrap; font-size:.83rem; color:var(--muted); }
+.rm-metrics span { padding:7px 10px; border-radius:10px; background:var(--soft); }
+.rm-actions { display:flex; gap:10px; flex-wrap:wrap; }
+.rm-preference-grid { display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); }
+.rm-toggle { display:flex; gap:10px; align-items:flex-start; padding:14px; border:1px solid var(--line); border-radius:14px; background:var(--panel); }
+.rm-toggle input { margin-top:4px; accent-color:var(--accent); }
+.rm-toggle span { display:grid; gap:5px; }
+.rm-toggle small { color:var(--muted); line-height:1.45; }
+.rm-note { margin-top:14px; border-left:4px solid var(--accent); padding:12px 14px; border-radius:10px; background:var(--soft); line-height:1.55; }
+.rm-list-tools { display:flex; gap:8px; flex-wrap:wrap; }
+.rm-list-tools select { max-width:180px; color:var(--text); background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:9px; }
+.rm-episode-list { display:grid; gap:12px; }
+.rm-episode { padding:16px; border:1px solid var(--line); border-radius:18px; background:var(--panel); box-shadow:0 8px 24px color-mix(in srgb,var(--text) 5%,transparent); }
+.rm-episode-head { display:flex; gap:12px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; }
+.rm-episode h3 { margin:0 0 5px; }
+.rm-episode p { overflow-wrap:anywhere; }
+.rm-meta { display:flex; flex-wrap:wrap; gap:7px; margin:9px 0; color:var(--muted); font-size:.82rem; }
+.rm-pill { padding:4px 8px; border-radius:999px; background:var(--soft); color:var(--accent-strong); font-weight:650; }
+.rm-pill.posted { background:#dff7e7; color:#146b3a; }
+.rm-pill.scheduled { background:#fff0cc; color:#805400; }
+.rm-episode-actions { display:flex; flex-wrap:wrap; gap:7px; margin-top:12px; }
+.rm-episode-actions .button { font-size:.82rem; padding:8px 11px; }
+.rm-episode textarea, .rm-episode input, .rm-episode select { width:100%; color:var(--text); background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:9px; }
+.rm-edit-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; margin-top:10px; }
+.rm-edit-grid .full { grid-column:1/-1; }
+.rm-import-preview { display:grid; gap:10px; margin-top:14px; }
+.rm-import-row { padding:12px; border:1px solid var(--line); border-radius:14px; background:var(--panel); }
+.rm-import-row label { display:block; margin:8px 0; }
+.rm-import-row input, .rm-import-row textarea { width:100%; padding:9px; color:var(--text); background:var(--bg); border:1px solid var(--line); border-radius:9px; }
+.rm-import-row textarea { min-height:100px; }
+.rm-import-row .rm-import-top { display:flex; gap:8px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+.rm-word-preview { font-size:.8rem; color:var(--muted); }
+@media(max-width:600px) { .rm-edit-grid { grid-template-columns:1fr; } .rm-list-tools select { max-width:100%; flex:1; } .rm-actions .button { flex:1; } }

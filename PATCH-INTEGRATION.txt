@@ -1,0 +1,11 @@
+INTEGRATION NOTES FOR CHANNEL STUDIO
+
+This is a separate Python API service; do not upload the FastAPI files into the GitHub Pages root and expect GitHub Pages to execute them.
+
+Suggested repository placement:
+  backend/episode-splitter-api/
+
+Copy this package's contents into that folder in the Channel Studio repository. Deploy the service to a Python-capable host, configure HTTPS, then update the frontend's Auto-Splitter to POST the extracted plain text to:
+  https://YOUR-STAGING-API-HOST/api/stories/split
+
+Do not point the public frontend at production until lead review and the three-document staging gate have passed. The current static frontend remains unchanged by this package. No private keys or service-role secrets are required for the splitter itself.

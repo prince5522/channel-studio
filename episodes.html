@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" data-theme="system">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <script src="js/app-shell-behavior.js"></script><meta name="theme-color" content="#101827"><meta name="description" content="Turn a season into 13 manageable episodes."><title>Episode Manager — Channel Studio</title><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="css/styles.css"><link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="css/themes.css"></head>
+<body data-page="episodes">
+<div class="app-layout">
+<aside class="sidebar"><a class="brand" href="home.html"><span class="brand-mark small-mark">CS</span><span>Channel<span class="brand-accent">Studio</span><small>YOUR CREATOR SPACE</small></span></a><nav class="main-nav" aria-label="Main navigation"><a class="nav-link " href="home.html"><span>⌂</span><b>Home</b></a>
+<a class="nav-link " href="stories.html"><span>▤</span><b>Stories</b></a>
+<a class="nav-link active" href="episodes.html"><span>▥</span><b>Episodes</b></a>
+<a class="nav-link" href="ready-made.html"><span>✍</span><b>Ready-Made Episodes</b></a>
+<a class="nav-link " href="planner.html"><span>◷</span><b>Planner</b></a>
+<a class="nav-link " href="hype.html"><span>↗</span><b>Hype</b></a>
+<a class="nav-link " href="media.html"><span>▣</span><b>Media Library</b></a>
+<a class="nav-link" href="docs.html"><span>📄</span><b>Document Reader</b></a>
+<a class="nav-link " href="channels.html"><span>◎</span><b>Channels</b></a>
+<a class="nav-link" href="complaints.html"><span>⚑</span><b>Complaints</b></a>
+<a class="nav-link" href="reviews.html"><span>★</span><b>Reviews</b></a>
+<a class="nav-link " href="notifications.html"><span>♧</span><b>Alerts</b></a>
+<a class="nav-link " href="backup.html"><span>▣</span><b>Backup</b></a>
+<a class="nav-link " href="settings.html"><span>⚙</span><b>Settings</b></a></nav><div class="sidebar-bottom"><a class="nav-link" href="index.html"><span>↗</span><b>Welcome screen</b></a><p class="small muted">Keep creating. Keep your stories safe.</p></div></aside>
+<div class="main-column"><header class="topbar"><button id="menuToggle" class="icon-button mobile-menu" aria-label="Open menu">☰</button><div><p class="eyebrow">CHANNEL STUDIO</p><p class="topbar-title">Episode Manager</p></div><div class="topbar-actions"><button id="quickTheme" class="icon-button" aria-label="Toggle theme" title="Toggle theme">◐</button><a class="avatar-link" href="settings.html" aria-label="Settings">CS</a></div></header>
+<main class="page-content page-enter">
+<section class="page-intro"><p class="eyebrow">SEASON TOOLKIT</p><h1>Episode <span>splitter</span></h1><p class="muted">Choose a saved story, select how to split it by words, characters, or characters excluding spaces, then review each part before saving.</p></section>
+<section class="panel"><form id="splitForm" class="form-grid"><label class="full">Choose a story<select id="splitStory" required><option value="">Select a saved story…</option></select></label><label>Episodes per season<input id="episodeCount" type="number" min="1" max="50" value="13" required></label><label>Split method<select id="splitMethod"><option value="words">Words (keep words intact)</option><option value="characters">Characters (including spaces)</option><option value="noSpaces">Characters without spaces</option><option value="paragraph">Keep paragraphs together where possible</option></select></label><div class="full"><button class="button primary" type="submit">Create episode preview</button></div></form></section>
+<section class="section-block"><div class="section-heading"><h2>Episode preview</h2><span class="pill">Review before saving</span></div><div id="episodePreview" class="episode-grid"><div class="empty-state">Choose a story to create a preview.</div></div></section><section class="section-block"><div class="section-heading"><h2>Saved episodes</h2><span class="pill" id="savedEpisodeCount">0 episodes</span></div><label class="search-label">Search episodes<input id="episodeSearch" type="search" placeholder="Search episode or season title…"></label><div id="savedEpisodeList" class="stack-list"><div class="empty-state">Your saved episodes will appear here.</div></div></section><section class="section-block" id="episodeReaderPanel" hidden><div class="section-heading"><h2 id="episodeReaderTitle">Episode reader</h2><button class="button ghost small-button" id="closeEpisodeReader" type="button">Close reader</button></div><p id="episodeReaderMeta" class="small muted"></p><article id="episodeReaderText" class="story-reading-text"></article></section>
+</main><footer class="app-footer">Made for your stories <span>✦</span> <span class="muted">Local-first • Your content stays yours</span></footer></div></div>
+<div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+<script src="js/storage.js"></script><script src="js/themes.js"></script><script src="js/transitions.js"></script><script src="js/effects.js"></script><script src="js/notifications.js"></script><script src="js/story-engine.js"></script><script src="js/app.js"></script>
+</body></html>
