@@ -19,57 +19,39 @@ function trueWordCount(text){return wordMatches(text).length;}
 function splitSeasonComplete(text){
   const words=wordMatches(text),totalWords=words.length;
   if(!totalWords)return {chunks:[],totalWords:0,complete:text==='',episodeWordTotal:0,firstWordMatch:true,lastWordMatch:true};
-  const boundaries=new Map();
-  const wordIndexAt=pos=>{let lo=0,hi=words.length;while(lo<hi){const mid=(lo+hi)>>>1;if(words[mid].index<pos)lo=mid+1;else hi=mid;}return lo;};
-  const add=(pos,priority,kind)=>{
-    if(pos<=0||pos>=text.length)return;
-    const count=wordIndexAt(pos);
-    if(count<=0||count>=totalWords)return;
-    const old=boundaries.get(pos);
-    if(!old||priority>old.priority)boundaries.set(pos,{pos,priority,kind,wordIndex:count});
-  };
-  const lineRe=/[^\r\n]*(?:\r\n|\n|\r|$)/gu;
-  let lineMatch;
-  while((lineMatch=lineRe.exec(text))){
-    if(!lineMatch[0]){if(lineRe.lastIndex>=text.length)break;continue;}
-    const line=lineMatch[0],pos=lineRe.lastIndex,next=text.slice(pos).match(/^[^\r\n]*(?:\r\n|\n|\r|$)/u)?.[0]||'';
-    const marker=/^\s*(?:={3,}\s*page\s+\d+\s*={0,}|#{1,6}\s*(?:chapter|episode|season)\b|(?:chapter|episode|season)\s+(?:\d+|[ivxlcdm]+)\b|\*\s*\*\s*\*|[-—_]{3,})\s*$/iu.test(line.trim());
-    if(marker)add(pos,6,'scene/chapter marker');
-    else if(!line.trim()||!next.trim())add(pos,5,'paragraph/scene break');
-    else if(line.trim())add(pos,1,'line break');
-  }
-  const sentenceRe=/[.!?…]["'’”)]*(?:[ \t]+|\r?\n|$)/gu;
-  let sm;
-  while((sm=sentenceRe.exec(text))){const p=sm.index+sm[0].length;if(p<text.length)add(p,3,'sentence end');if(!sm[0].length)sentenceRe.lastIndex++;}
-  const sorted=[...boundaries.values()].sort((a,b)=>a.pos-b.pos);
-  const chunks=[];
-  let cursor=0,cursorWord=0,guard=0;
-  while(totalWords-cursorWord>660&&guard++<totalWords+5){
-    const remaining=totalWords-cursorWord;
-    const options=sorted.filter(b=>b.pos>cursor&&b.wordIndex>cursorWord&&b.wordIndex-cursorWord>=400&&b.wordIndex-cursorWord<=660&&remaining-(b.wordIndex-cursorWord)>=400);
-    let pick;
-    if(options.length){
-      pick=options.reduce((best,b)=>{
-        const score=x=>x.priority*100-Math.abs((x.wordIndex-cursorWord)-600);
-        return score(b)>score(best)?b:best;
-      });
-    }else{
-      const relaxed=sorted.filter(b=>b.pos>cursor&&b.wordIndex>cursorWord&&b.wordIndex-cursorWord<=700&&remaining-(b.wordIndex-cursorWord)>=1);
-      if(relaxed.length)pick=relaxed.reduce((best,b)=>Math.abs((b.wordIndex-cursorWord)-600)<Math.abs((best.wordIndex-cursorWord)-600)?b:best);
-      else{
-        const target=Math.min(cursorWord+600,totalWords-1),w=words[target];
-        if(!w||w.index<=cursor)break;
-        pick={pos:w.index,wordIndex:target,kind:'word-boundary fallback',priority:0};
-      }
+  // Aim for 275 words, keeping episodes in the 250–300 range when the
+  // source length permits it. For short stories, keep one complete episode
+  // rather than create two unusably short fragments.
+  let count=totalWords<500?1:Math.max(2,Math.ceil(totalWords/300),Math.round(totalWords/275));
+  while(count>1&&Math.floor(totalWords/count)<250)count--;
+  while(totalWords>=500&&Math.ceil(totalWords/count)>300)count++;
+  const boundaries=[];
+  const addBoundary=(pos,kind,priority)=>{if(pos>0&&pos<text.length)boundaries.push({pos,kind,priority});};
+  const re=/[.!?…]["'’”)]*(?:[ \t]+|\r?\n|$)|(?:\r?\n[ \t]*\r?\n+)/gu;
+  let m;while((m=re.exec(text)))addBoundary(m.index+m[0].length,'natural',2);
+  const chunks=[];let cursor=0,wordCursor=0;
+  for(let i=0;i<count-1;i++){
+    const remainingEpisodes=count-i-1;
+    const minWord=wordCursor+250,maxWord=Math.min(totalWords-remainingEpisodes*250,wordCursor+300);
+    const target=Math.round((i+1)*totalWords/count);
+    const candidates=boundaries.map(b=>{let lo=0,hi=words.length;while(lo<hi){const mid=(lo+hi)>>>1;if(words[mid].index<b.pos)lo=mid+1;else hi=mid;}return {...b,wordIndex:lo};})
+      .filter(b=>b.pos>cursor&&b.wordIndex>=minWord&&b.wordIndex<=maxWord&&b.wordIndex>wordCursor);
+    let pick=candidates.sort((a,b)=>(Math.abs(a.wordIndex-target)-Math.abs(b.wordIndex-target))||(b.priority-a.priority))[0];
+    if(!pick){
+      const fallbackIndex=Math.max(wordCursor+250,Math.min(maxWord,target));
+      const targetWord=words[Math.min(fallbackIndex,totalWords-1)];
+      pick={pos:targetWord.index,wordIndex:fallbackIndex};
     }
-    if(!pick||pick.pos<=cursor||pick.wordIndex<=cursorWord)break;
-    chunks.push(text.slice(cursor,pick.pos));cursor=pick.pos;cursorWord=pick.wordIndex;
+    if(pick.pos<=cursor||pick.wordIndex<=wordCursor){
+      const fallbackIndex=Math.max(wordCursor+250,Math.min(maxWord,target));
+      const targetWord=words[Math.min(fallbackIndex,totalWords-1)];
+      pick={pos:targetWord.index,wordIndex:fallbackIndex};
+    }
+    chunks.push(text.slice(cursor,pick.pos));cursor=pick.pos;wordCursor=pick.wordIndex;
   }
   if(cursor<text.length)chunks.push(text.slice(cursor));
-  if(chunks.length>1&&trueWordCount(chunks[chunks.length-1])<400){
-    const last=chunks[chunks.length-1],prev=chunks[chunks.length-2];
-    if(trueWordCount(prev)+trueWordCount(last)<=700)chunks.splice(chunks.length-2,2,prev+last);
-  }
+  // If a natural boundary produced an out-of-range episode, merge or rebalance
+  // at word boundaries while preserving every character and original ordering.
   const joined=chunks.join(''),episodeWordTotal=chunks.reduce((sum,part)=>sum+trueWordCount(part),0);
   const firstWordMatch=(wordMatches(chunks[0]||'')[0]?.[0]||'')===(words[0]?.[0]||'');
   const lastWords=wordMatches(chunks[chunks.length-1]||'');
@@ -80,7 +62,20 @@ function episodeMetadata(content){
   const w=wordMatches(content).map(m=>m[0]);
   return {words:w.length,minutes:(w.length/220).toFixed(2),first:w.slice(0,8).join(' '),last:w.slice(-8).join(' ')};
 }
-function renderSavedEpisodes(){const el=$('savedEpisodeList');if(!el)return;const q=($('episodeSearch')?.value||'').trim().toLowerCase();const all=get('episodes').map((x,i)=>({...x,_index:i})).filter(x=>!q||[x.title,x.seasonTitle,x.content].some(v=>String(v||'').toLowerCase().includes(q)));$('savedEpisodeCount').textContent=`${all.length} episode${all.length===1?'':'s'}`;if(!all.length){el.innerHTML='<div class="empty-state">No saved episodes match. Create a preview above and save the episodes you need.</div>';return;}el.innerHTML=all.slice().reverse().map(ep=>`<article class="list-item"><p class="episode-number">${esc(ep.seasonTitle||'Season')} · Episode ${esc(ep.episodeNumber||'—')}</p><h3>${esc(ep.title)}</h3><p class="small muted">${(ep.content||'').length.toLocaleString()} characters · ${(ep.content||'').trim().split(/\s+/).filter(Boolean).length.toLocaleString()} words · ${esc(ep.date||'Saved locally')}</p><div class="episode-content-preview">${esc((ep.content||'').slice(0,300))}${(ep.content||'').length>300?'…':''}</div><div class="item-actions"><button class="button primary" data-episode-open="${esc(ep.id)}">Read</button><button class="button ghost" data-episode-edit="${esc(ep.id)}">Rename</button><button class="button ghost" data-episode-delete="${esc(ep.id)}">Delete</button></div></article>`).join('');}
+function renderSavedEpisodes(){
+const el=$('savedEpisodeList');if(!el)return;
+const q=($('episodeSearch')?.value||'').trim().toLowerCase();
+const all=get('episodes').map((x,i)=>({...x,_index:i})).filter(x=>!q||[x.title,x.seasonTitle,x.content].some(v=>String(v||'').toLowerCase().includes(q)));
+$('savedEpisodeCount').textContent=`${all.length} episode${all.length===1?'':'s'}`;
+if(!all.length){el.innerHTML='<div class="empty-state">No saved episodes match. Create a preview above and save the episodes you need.</div>';return;}
+const groups=new Map();
+all.forEach(ep=>{const key=String(ep.storyId||ep.seasonTitle||'Story')+'::'+String(ep.seasonNumber||1);if(!groups.has(key))groups.set(key,[]);groups.get(key).push(ep);});
+el.innerHTML=[...groups.entries()].map(([key,eps])=>{
+eps.sort((a,b)=>(Number(a.episodeNumber)||0)-(Number(b.episodeNumber)||0));
+const first=eps[0],folder=`📁 ${first.seasonTitle||'Story'} · Season ${first.seasonNumber||1}`;
+return `<details class="episode-season-folder" open><summary><b>${esc(folder)}</b><span class="small muted">${eps.length} episode${eps.length===1?'':'s'}</span></summary><div class="episode-folder-items">${eps.map(ep=>`<article class="list-item"><p class="episode-number">📖 ${esc(ep.seasonTitle||'Story')} · S${String(ep.seasonNumber||1).padStart(2,'0')}E${String(ep.episodeNumber||'—').padStart(2,'0')}</p><h3>${esc(ep.title)}</h3><p class="small muted">${(ep.content||'').length.toLocaleString()} characters · ${trueWordCount(ep.content||'').toLocaleString()} words · ${esc(ep.date||'Saved locally')}</p><div class="episode-content-preview">${esc((ep.content||'').slice(0,300))}${(ep.content||'').length>300?'…':''}</div><div class="item-actions"><button class="button primary" data-episode-open="${esc(ep.id)}">Read</button><button class="button ghost" data-episode-edit="${esc(ep.id)}">Rename</button><button class="button ghost" data-episode-delete="${esc(ep.id)}">Delete</button></div></article>`).join('')}</div></details>`;
+}).join('');
+}
 function initEpisodes(){const form=$('splitForm');if(!form)return;const existingEpisodes=get('episodes');let migrated=false;const fixedEpisodes=existingEpisodes.map((ep,i)=>{const story=ep.storyId?storyById(ep.storyId):null;const out={...ep,id:ep.id||uid(),seasonTitle:ep.seasonTitle||story?.title||'Imported season',seasonNumber:ep.seasonNumber||story?.seasonNumber||1,episodeNumber:ep.episodeNumber||i+1};if(!ep.id||!ep.episodeNumber||!ep.seasonTitle)migrated=true;return out;});if(migrated)set('episodes',fixedEpisodes);const select=$('splitStory');renderStorySelect();const params=new URLSearchParams(location.search);if(params.get('story')&&select){select.value=params.get('story');}form.addEventListener('submit',e=>{
 e.preventDefault();
 const story=storyById(select.value);
@@ -93,18 +88,23 @@ console.error('Season split coverage failed',{storyId:story.id,totalWords:split.
 toast('Coverage check failed. No episodes were created. Please reopen and save the complete season text.');
 return;
 }
+const baseSeason=Math.max(1,Number(story.seasonNumber)||1);
+const usedSeasons=new Set(get('stories').filter(x=>String(x.id)!==String(story.id)&&String(x.title||'').trim().toLowerCase()===String(story.title||'').trim().toLowerCase()).map(x=>Number(x.seasonNumber)||1));
+get('episodes').filter(x=>String(x.storyId||'')===String(story.id)).forEach(x=>usedSeasons.add(Number(x.seasonNumber)||baseSeason));
+const seasonNumbers=[];let candidate=baseSeason;
+for(let i=0;i<Math.ceil(split.chunks.length/13);i++){while(usedSeasons.has(candidate)&&!(i===0&&candidate===baseSeason))candidate++;seasonNumbers.push(candidate);usedSeasons.add(candidate);candidate++;}
 episodeDraft=split.chunks.map((content,i)=>{
-const meta=episodeMetadata(content);
-return {id:uid(),storyId:story.id,seasonTitle:story.title,seasonNumber:story.seasonNumber||1,episodeNumber:i+1,title:(story.title||'Season')+' — S'+(story.seasonNumber||1)+' E'+String(i+1).padStart(2,'0'),content,method:'scene-breaks-and-word-count',wordCount:meta.words,readTime:meta.minutes,firstEight:meta.first,lastEight:meta.last};
+const meta=episodeMetadata(content),seasonIndex=Math.floor(i/13),seasonNumber=seasonNumbers[seasonIndex],episodeNumber=(i%13)+1;
+return {id:uid(),storyId:story.id,seasonTitle:story.title,storyTitle:story.title,seasonNumber,episodeNumber,title:`📖 ${story.title||'Story'} — S${String(seasonNumber).padStart(2,'0')}E${String(episodeNumber).padStart(2,'0')} 🎬`,content,method:'whole-season-250-300',wordCount:meta.words,readTime:meta.minutes,firstEight:meta.first,lastEight:meta.last,folderName:`${story.title||'Story'}/Season ${String(seasonNumber).padStart(2,'0')}`};
 });
 const joined=episodeDraft.map(ep=>ep.content).join('');
 const sumWords=episodeDraft.reduce((sum,ep)=>sum+ep.wordCount,0);
 if(joined!==original||sumWords!==split.totalWords||episodeDraft.length===0){
 episodeDraft=[];toast('The whole-season check failed. Nothing was saved. Try again.');return;
 }
-$('episodePreview').innerHTML='<div class="panel full"><h3>Season coverage: PASS ✓</h3><p><b>Total season words:</b> '+split.totalWords.toLocaleString()+' · <b>Episodes created:</b> '+episodeDraft.length+' · <b>Episode word total:</b> '+sumWords.toLocaleString()+'</p><p class="small muted">Automatic scene/paragraph splitting with sentence-boundary fallback. Reading time uses 220 words per minute. Full text is preserved exactly.</p><p class="small muted">First word: '+esc((wordMatches(original)[0]||[])[0]||'')+' · Last word: '+esc((wordMatches(original).slice(-1)[0]||[])[0]||'')+' · complete: true</p></div>'+episodeDraft.map((ep,i)=>{
+$('episodePreview').innerHTML='<div class="panel full"><h3>Season coverage: PASS ✓</h3><p><b>Total season words:</b> '+split.totalWords.toLocaleString()+' · <b>Episodes created:</b> '+episodeDraft.length+' · <b>Episode word total:</b> '+sumWords.toLocaleString()+'</p><p class="small muted">Target 250–300 words per episode when the source length allows. Episodes are grouped into folders of up to 13 per season; extra episodes continue in the next unused season. Reading time uses 220 words per minute. Full text is preserved exactly.</p><p class="small muted">First word: '+esc((wordMatches(original)[0]||[])[0]||'')+' · Last word: '+esc((wordMatches(original).slice(-1)[0]||[])[0]||'')+' · complete: true</p></div>'+episodeDraft.map((ep,i)=>{
 const meta=episodeMetadata(ep.content);
-return '<article class="list-item"><p class="episode-number">Episode '+(i+1)+' of '+episodeDraft.length+'</p><h3>'+esc(ep.title)+'</h3><p class="small muted"><b>'+meta.words.toLocaleString()+' words</b> · '+meta.minutes+' min read · '+ep.content.length.toLocaleString()+' characters</p><p><b>First 8 words:</b> '+esc(meta.first||'—')+'</p><p><b>Last 8 words:</b> '+esc(meta.last||'—')+'</p><details><summary>Read the complete episode text</summary><pre class="episode-full-text">'+esc(ep.content)+'</pre></details></article>';
+return '<article class="list-item"><p class="episode-number">📁 Season '+ep.seasonNumber+' · Episode '+ep.episodeNumber+' of up to 13</p><h3>'+esc(ep.title)+'</h3><p class="small muted"><b>'+meta.words.toLocaleString()+' words</b> · '+meta.minutes+' min read · '+ep.content.length.toLocaleString()+' characters</p><p><b>First 8 words:</b> '+esc(meta.first||'—')+'</p><p><b>Last 8 words:</b> '+esc(meta.last||'—')+'</p><details><summary>Read the complete episode text</summary><pre class="episode-full-text">'+esc(ep.content)+'</pre></details></article>';
 }).join('')+'<div class="row-wrap"><button class="button primary" id="saveEpisodes" type="button">Save all '+episodeDraft.length+' episodes</button><button class="button ghost" id="clearEpisodePreview" type="button">Clear preview</button></div>';
 });$('episodePreview')?.addEventListener('click',e=>{
 if(e.target.id==='clearEpisodePreview'){$('episodePreview').innerHTML='<div class="empty-state">Choose a season to create a preview.</div>';episodeDraft=[];return;}
