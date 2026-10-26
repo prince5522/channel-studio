@@ -1,0 +1,33 @@
+Channel Studio season splitter fix
+Target repository: prince5522/Channel-studio
+Files changed:
+- js/story-engine.js
+- episodes.html
+- service-worker.js (cache version bumped to v10 so installed PWAs fetch the fix)
+
+What changed:
+- Removes fixed 13-episode / manually selected split-method behaviour from the episode preview.
+- Counts words from the actual episode text with a Unicode-aware word matcher.
+- Targets about 600 words and prefers scene, chapter, paragraph, then sentence boundaries.
+- Keeps original source slices verbatim and verifies joined episode text equals the entire saved season before allowing save.
+- Verifies first/last word and sum of episode word counts.
+- Displays real word counts, read time at 220 words/minute, first/last eight words, and full episode text.
+- If coverage fails, the app refuses to create/save the episode preview.
+
+Important:
+This archive includes the whole-season splitter update and a service-worker cache version bump. It has NOT been pushed to GitHub or published to the live Pages URL because the GitHub integration rejected writes with HTTP 403 (Resource not accessible by integration). Upload these three changed files to the existing repository to publish the fix.
+
+Validation performed: JavaScript syntax check passed. Splitter test cases covered empty/short text, a 5,000-word season, a 15,000-word season, and paragraph-heavy text; each non-empty case preserved the exact original text and passed the word-total/first-word/last-word checks.
+
+
+CHANNEL STUDIO V10 PATCH — WHOLE-SEASON SPLITTER + PLANNER
+- Episode splitting now targets 250–300 words where the total source length permits.
+- All source text is kept in its original order and validated before saving.
+- Saved episodes are displayed in collapsible folder-style groups by story and season.
+- Each season folder holds up to 13 episodes; overflow continues into the next unused season number.
+- Episode titles include the story title, season/episode codes, and emojis.
+- Planner form is simplified to planned post, channel, and posting time.
+- Enforces a maximum of four scheduled posts per date.
+- At posting time, the planner shows a due-post card. Clicking it copies the post, opens the saved channel URL, and marks the planner task complete as the handoff action. The user still manually publishes in WhatsApp.
+- New file: js/planner-publish.js
+- Service worker cache bumped to v11.
