@@ -21,15 +21,15 @@
 <a class="nav-link " href="settings.html"><span>⚙</span><b>Settings</b></a></nav><div class="sidebar-bottom"><a class="nav-link" href="index.html"><span>↗</span><b>Welcome screen</b></a><p class="small muted">Keep creating. Keep your stories safe.</p></div></aside>
 <div class="main-column"><header class="topbar"><button id="menuToggle" class="icon-button mobile-menu" aria-label="Open menu">☰</button><div><p class="eyebrow">CHANNEL STUDIO</p><p class="topbar-title">Planner</p></div><div class="topbar-actions"><button id="quickTheme" class="icon-button" aria-label="Toggle theme" title="Toggle theme">◐</button><a class="avatar-link" href="settings.html" aria-label="Settings">CS</a></div></header>
 <main class="page-content page-enter">
-<section class="page-intro"><p class="eyebrow">PLAN AHEAD</p><h1>Posting <span>planner</span></h1><p class="muted">Plan up to 4 posts per day. At posting time, copy the post and open the selected channel to publish it yourself.</p></section>
+<section class="page-intro"><p class="eyebrow">PLAN AHEAD</p><h1>Posting <span>planner</span></h1><p class="muted">Plan up to 4 posts per day. When the planner is open, a due-time alarm and notification remind you. Tap to copy the post and open the selected channel, publish it in WhatsApp, then confirm completion.</p></section>
 <section class="panel"><form id="taskForm" class="form-grid">
 <label class="full">Planned post<textarea id="taskTitle" required maxlength="5000" rows="6" placeholder="Write or paste the exact post you want to publish…"></textarea></label>
 <label class="full">Post to channel<select id="taskChannel" required><option value="">Choose a saved channel…</option></select><span class="small muted">Add the channel URL first in Channels. At posting time, Channel Studio will copy your text and open the channel link.</span></label>
 <label class="full">Posting time<input id="taskDate" type="datetime-local" required></label>
 <input id="taskType" type="hidden" value="post"><input id="taskPriority" type="hidden" value="normal"><input id="taskReminder" type="hidden" value="0"><textarea id="taskNotes" hidden></textarea>
 <div class="full row-wrap"><button class="button primary" type="submit">Schedule post</button><button class="button ghost" type="button" id="enableNotifications">Enable notifications</button></div>
-<p class="small muted full" id="notificationStatus">Notifications have not been enabled.</p>
-<p class="small muted full">Maximum 4 planned posts per day. Posts are copied for you to publish manually; WhatsApp publishing is not automatic.</p>
+<p class="small muted full" id="notificationStatus">Enable notifications to receive posting-time alerts. For reliable alerts, keep Channel Studio open; browsers may suspend alarms when the app is closed.</p>
+<p class="small muted full">Maximum 4 planned posts per day. WhatsApp must remain in control of publishing: Channel Studio cannot force-open another app, auto-paste, or verify publication in the background.</p>
 </form></section>
 <section class="section-block"><div class="section-heading"><h2>Scheduled posts</h2><select id="taskFilter" class="compact-select"><option value="all">All posts</option><option value="pending">Upcoming</option><option value="done">Completed</option></select></div><div id="taskList" class="stack-list"></div></section>
 </main><footer class="app-footer">Made for your stories <span>✦</span> <span class="muted">Local-first • Your content stays yours</span></footer></div></div>
