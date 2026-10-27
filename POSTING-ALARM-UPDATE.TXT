@@ -1,0 +1,6 @@
+CHANNEL STUDIO POSTING ALARM UPDATE
+
+- When a scheduled post becomes due while Channel Studio is open, the app checks for due posts and shows a notification if permission was granted, a toast, and a due-post panel.
+- Tap Copy post & open channel to copy the text and open the saved channel URL. Paste and publish manually in WhatsApp.
+- After publishing, return to Channel Studio and tap I've posted it to mark the task complete. The app cannot detect WhatsApp publication automatically.
+- A web app cannot reliably wake itself or force-open WhatsApp while closed. For alerts, keep the installed PWA/browser active and grant notification permission. Reliable closed-app alarms require a server-side push notification service and supported browser/device settings.
