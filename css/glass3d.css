@@ -1,0 +1,69 @@
+/* Channel Studio v14 — glassmorphism + 3D layer.
+   Loaded last on every page. Uses the existing theme variables so all six themes keep working.
+   Motion respects Settings → Motion (data-motion="reduced") and the OS "reduce motion" setting. */
+
+:root {
+  --glass-bg: color-mix(in srgb, var(--panel, #fff) 60%, transparent);
+  --glass-bg-strong: color-mix(in srgb, var(--panel, #fff) 78%, transparent);
+  --glass-line: rgba(255, 255, 255, .55);
+  --glass-hi: rgba(255, 255, 255, .6);
+  --glass-shadow: 0 10px 30px rgba(24, 44, 78, .10), 0 2px 6px rgba(24, 44, 78, .06);
+  --glass-blur: 18px;
+  --depth-edge: rgba(5, 96, 120, .55);
+}
+html[data-theme="dark"], html[data-theme="ocean"], html[data-theme="forest"] {
+  --glass-line: rgba(255, 255, 255, .10);
+  --glass-hi: rgba(255, 255, 255, .10);
+  --glass-shadow: 0 14px 38px rgba(0, 0, 0, .34), 0 2px 8px rgba(0, 0, 0, .22);
+  --glass-bg: color-mix(in srgb, var(--panel, #182235) 55%, transparent);
+  --glass-bg-strong: color-mix(in srgb, var(--panel, #182235) 74%, transparent);
+  --depth-edge: rgba(0, 0, 0, .5);
+}
+
+/* ---------- Ambient 3D backdrop ---------- */
+body { position: relative; }
+body::before, body::after {
+  content: ""; position: fixed; z-index: -1; pointer-events: none; border-radius: 50%;
+  filter: blur(70px); opacity: .55; will-change: transform;
+}
+body::before { width: 46vmax; height: 46vmax; left: -14vmax; top: -16vmax; background: radial-gradient(circle at 30% 30%, var(--accent, #08a88a), transparent 68%); animation: blobA 22s ease-in-out infinite alternate; }
+body::after { width: 42vmax; height: 42vmax; right: -12vmax; bottom: -14vmax; background: radial-gradient(circle at 60% 60%, var(--accent-2, #2879f0), transparent 68%); animation: blobB 26s ease-in-out infinite alternate; }
+@keyframes blobA { to { transform: translate3d(9vmax, 7vmax, 0) scale(1.15); } }
+@keyframes blobB { to { transform: translate3d(-8vmax, -6vmax, 0) scale(1.12); } }
+
+/* ---------- Glass surfaces ---------- */
+.sidebar, .topbar, .panel, .content-card, .section-block, .stat-card, .quick-card, .hero-card,
+.welcome-shell, .week-day, .agenda-item, .notice.info, .status-card, .tour-card, dialog.glass-dialog {
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-line);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-hi);
+}
+.sidebar { background: var(--glass-bg-strong); border-right: 1px solid var(--glass-line); }
+.topbar { background: color-mix(in srgb, var(--bg, #f4f7fb) 55%, transparent); }
+.hero-card { background: linear-gradient(125deg, color-mix(in srgb, var(--hero-a, #e3fff5) 70%, transparent), color-mix(in srgb, var(--hero-b, #eaf2ff) 70%, transparent)); }
+/* Repeated list rows stay lighter (no blur) so long lists remain smooth on phones. */
+.list-item, .episode-folder-items .list-item {
+  background: color-mix(in srgb, var(--panel, #fff) 70%, transparent);
+  border: 1px solid var(--glass-line);
+  box-shadow: 0 6px 18px rgba(24, 44, 78, .07), inset 0 1px 0 var(--glass-hi);
+}
+.form-grid input, .form-grid textarea, .form-grid select, .compact-select, .search-label input {
+  background: color-mix(in srgb, var(--bg, #fff) 70%, transparent);
+  border-color: var(--glass-line);
+  box-shadow: inset 0 2px 5px rgba(24, 44, 78, .06);
+}
+.nav-link { transition: transform .2s, background .2s, box-shadow .2s; }
+.nav-link:hover, .nav-link.active {
+  background: color-mix(in srgb, var(--accent, #08a88a) 16%, transparent);
+  box-shadow: inset 0 1px 0 var(--glass-hi), 0 6px 14px color-mix(in srgb, var(--accent, #08a88a) 18%, transparent);
+  transform: translateX(3px);
+}
+
+/* ---------- 3D tilt cards ---------- */
+.app-layout { perspective: 1600px; }
+[data-tilt] {
+  position: relative; transform-style: preserve-3d;
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform .22s cubic-bezier(.2, .8, .2, 1), box-shadow .25s;
