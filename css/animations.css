@@ -1,1 +1,156 @@
-.morph-in{animation:appear .55s cubic-bezier(.2,.8,.2,1) both}.page-enter{animation:appear .35s ease-out both}.tilt-card{transition:transform .2s,box-shadow .2s}.tilt-card:hover{box-shadow:0 12px 32px #1720330d}@keyframes appear{from{opacity:0;transform:translateY(10px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* ==========================================
+   CHANNEL STUDIO v14 — ANIMATIONS
+   3D effects • Glassmorphism • Smooth motion
+   ========================================== */
+
+/* Page and element entrance animations */
+.morph-in {
+  animation: appear 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.page-enter {
+  animation: appear 0.35s ease-out both;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Smooth 3D card effects */
+.tilt-card {
+  position: relative;
+  transform: perspective(900px) translateZ(0);
+  transform-style: preserve-3d;
+  transition:
+    transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.28s ease,
+    border-color 0.28s ease;
+  will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tilt-card:hover {
+    transform: perspective(900px) translateY(-5px) rotateX(1deg);
+    box-shadow:
+      0 16px 36px rgba(15, 23, 42, 0.12),
+      0 4px 12px rgba(15, 23, 42, 0.06);
+  }
+}
+
+.tilt-card:active {
+  transform: perspective(900px) scale(0.985);
+}
+
+/* Glassmorphism utility */
+.glass-panel,
+.glass-card {
+  background: rgba(255, 255, 255, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.48);
+  -webkit-backdrop-filter: blur(18px) saturate(145%);
+  backdrop-filter: blur(18px) saturate(145%);
+  box-shadow:
+    0 8px 28px rgba(15, 23, 42, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+.glass-card {
+  border-radius: 18px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .glass-card:hover {
+    border-color: rgba(255, 255, 255, 0.72);
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.11);
+  }
+}
+
+/* Floating entrance */
+.float-in {
+  animation: floatIn 0.65s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Gentle floating effect for decorative elements */
+.float-gentle {
+  animation: gentleFloat 4s ease-in-out infinite;
+}
+
+@keyframes gentleFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Subtle glowing effect */
+.glow-effect {
+  transition: box-shadow 0.25s ease;
+}
+
+.glow-effect:hover {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.16),
+    0 8px 28px rgba(59, 130, 246, 0.15);
+}
+
+/* Button press feedback */
+.press-effect {
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.press-effect:active {
+  transform: scale(0.97);
+  filter: brightness(0.97);
+}
+
+/* Respect devices with reduced transparency */
+@media (prefers-reduced-transparency: reduce) {
+  .glass-panel,
+  .glass-card {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.94);
+  }
+}
+
+/* Accessibility: reduce motion when requested */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+    transform: none !important;
+  }
+}
