@@ -1,0 +1,69 @@
+/* Channel Studio v14 — feature styles (workflow, schedule, alerts, video import, channels, tour). */
+
+.small-button { padding: 7px 11px !important; font-size: 13px; border-radius: 10px !important; }
+.danger-text { color: #e5484d; }
+.muted.small, .small.muted { font-size: 13px; }
+
+/* ---------- status chips ---------- */
+:root { --t-amber: #d98a05; --t-teal: #0a9d80; --t-blue: #2f7cf6; --t-green: #1f9d55; --t-red: #e5484d; --t-orange: #ea6a10; --t-grey: #7a8699; }
+.chip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 99px; font-size: 12px; font-weight: 750; white-space: nowrap; color: var(--c, var(--t-grey)); background: color-mix(in srgb, var(--c, var(--t-grey)) 14%, transparent); border: 1px solid color-mix(in srgb, var(--c, var(--t-grey)) 32%, transparent); }
+.tone-amber { --c: var(--t-amber); } .tone-teal { --c: var(--t-teal); } .tone-blue { --c: var(--t-blue); } .tone-green { --c: var(--t-green); }
+.tone-red { --c: var(--t-red); } .tone-orange { --c: var(--t-orange); } .tone-grey { --c: var(--t-grey); }
+
+/* ---------- global alert bar + bell ---------- */
+.alert-bar { display: flex; align-items: center; gap: 14px; padding: 12px 16px; margin-bottom: 16px; border-radius: 16px; border: 1px solid color-mix(in srgb, var(--c, var(--t-amber)) 40%, transparent); background: color-mix(in srgb, var(--c, var(--t-amber)) 14%, var(--panel, #fff)); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 10px 26px color-mix(in srgb, var(--c, var(--t-amber)) 22%, transparent); animation: barIn .5s cubic-bezier(.2, .8, .2, 1) both; }
+.alert-bar[hidden] { display: none; }
+.alert-bar[data-level="danger"] { --c: var(--t-red); } .alert-bar[data-level="warn"] { --c: var(--t-amber); } .alert-bar[data-level="info"] { --c: var(--t-blue); }
+.alert-bar > div { flex: 1; min-width: 0; } .alert-bar p { margin: 2px 0 0; font-size: 13px; color: var(--muted); }
+.alert-bar-icon { font-size: 26px; } .alert-more { font-size: 13px; font-weight: 700; color: var(--muted); white-space: nowrap; }
+@keyframes barIn { from { opacity: 0; transform: perspective(700px) rotateX(-18deg) translateY(-10px); } to { opacity: 1; transform: none; } }
+.alert-bar[data-level="danger"] .alert-bar-icon, .sch-item.hot .chip { animation: pulse 1.6s ease-in-out infinite; }
+@keyframes pulse { 50% { transform: scale(1.12); } }
+.bell-button { position: relative; text-decoration: none; }
+.bell-badge { position: absolute; top: -5px; right: -5px; min-width: 18px; height: 18px; padding: 0 4px; border-radius: 99px; background: var(--t-red); color: #fff; font-size: 11px; display: grid; place-items: center; font-style: normal; box-shadow: 0 2px 6px rgba(229, 72, 77, .5); }
+.bell-badge[hidden] { display: none; }
+
+/* ---------- home status cards ---------- */
+.status-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 20px 0; }
+.status-card { border-radius: 18px; padding: 18px 20px; }
+.status-card h3 { margin: 4px 0 6px; font-size: 19px; } .status-card p { margin: 0 0 8px; }
+
+/* ---------- progress ---------- */
+.progress-track.slim { height: 5px; margin-top: 6px; }
+.wf-pct { font-weight: 850; font-size: 18px; color: var(--accent, #08a88a); }
+.nc-bar { display: flex; height: 8px; border-radius: 99px; overflow: hidden; background: var(--line, #e4e9f2); margin: 6px 0; }
+.nc-bar i, .nc-legend i { display: block; height: 100%; }
+.b-posted { background: var(--t-green); } .b-sched { background: var(--t-blue); } .b-ready { background: var(--t-teal); } .b-edit { background: var(--t-amber); }
+
+/* ---------- workflow ---------- */
+.wf-tabs { display: flex; gap: 10px; overflow-x: auto; padding: 4px 2px 10px; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; }
+.wf-tab { flex: 0 0 auto; scroll-snap-align: start; display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 14px; border: 1px solid var(--glass-line); background: var(--glass-bg); color: var(--text); font-weight: 700; box-shadow: 0 4px 0 rgba(120, 135, 160, .22), inset 0 1px 0 var(--glass-hi); transition: transform .12s, box-shadow .12s; }
+.wf-tab i { font-style: normal; font-size: 12px; min-width: 22px; text-align: center; padding: 1px 6px; border-radius: 99px; background: color-mix(in srgb, var(--c, var(--t-grey)) 18%, transparent); color: var(--c, var(--text)); }
+.wf-tab.active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(120, 135, 160, .22), inset 0 0 0 2px var(--c, var(--accent)); background: color-mix(in srgb, var(--c, var(--accent)) 12%, var(--panel, #fff)); }
+.wf-toolbar { display: grid; grid-template-columns: 1fr minmax(160px, 240px); gap: 10px; margin: 6px 0 16px; }
+.wf-toolbar input, .wf-toolbar select, .compact-select { padding: 11px 12px; border: 1px solid var(--glass-line); border-radius: 12px; background: color-mix(in srgb, var(--bg, #fff) 70%, transparent); color: var(--text); min-width: 0; width: 100%; }
+.compact-select { width: auto; }
+.wf-story, .wf-season { border: 1px solid var(--glass-line); border-radius: 18px; background: var(--glass-bg); margin-bottom: 14px; box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-hi); }
+.wf-season { margin: 12px; background: color-mix(in srgb, var(--panel, #fff) 55%, transparent); box-shadow: 0 6px 16px rgba(24, 44, 78, .06), inset 0 1px 0 var(--glass-hi); }
+.wf-story > summary, .wf-season > summary { list-style: none; display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; }
+.wf-story > summary::-webkit-details-marker, .wf-season > summary::-webkit-details-marker, .sch-done > summary::-webkit-details-marker { display: none; }
+.wf-folder { font-size: 26px; transition: transform .25s; } details[open] > summary > .wf-folder { transform: rotateY(180deg) scale(1.05); }
+.wf-sum { flex: 1; min-width: 0; display: grid; gap: 2px; } .wf-sum b { font-size: 16px; overflow-wrap: anywhere; }
+.wf-mini { display: flex; gap: 8px; font-size: 12px; font-weight: 700; color: var(--muted); flex-wrap: wrap; justify-content: flex-end; }
+.wf-season-actions { padding: 0 16px 6px; display: flex; gap: 8px; flex-wrap: wrap; }
+.wf-eps { display: grid; gap: 10px; padding: 8px 12px 14px; }
+.wf-ep { display: flex; gap: 12px; padding: 12px; border-radius: 14px; border: 1px solid var(--glass-line); background: color-mix(in srgb, var(--panel, #fff) 72%, transparent); border-left: 4px solid var(--c, var(--t-grey)); }
+.wf-ep.stage-edit { --c: var(--t-amber); } .wf-ep.stage-ready { --c: var(--t-teal); } .wf-ep.stage-scheduled { --c: var(--t-blue); } .wf-ep.stage-posted { --c: var(--t-green); }
+.wf-ep-no { flex: 0 0 auto; width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; font-weight: 850; font-size: 13px; color: #fff; background: linear-gradient(135deg, var(--c), color-mix(in srgb, var(--c) 60%, #000)); box-shadow: 0 3px 0 rgba(0, 0, 0, .25); }
+.wf-ep-main { flex: 1; min-width: 0; } .wf-ep-main p { margin: 3px 0; }
+.wf-ep-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; flex-wrap: wrap; } .wf-ep-top h4 { margin: 0; font-size: 15px; overflow-wrap: anywhere; }
+.wf-excerpt { font-size: 13px; color: var(--muted); } .wf-when { font-size: 13px; font-weight: 650; color: var(--t-blue); } .wf-when.hot { color: var(--t-amber); }
+dialog .dlg-body { padding: 22px; display: grid; gap: 14px; } dialog .dlg-body h3 { margin: 0; }
+.dlg-field { display: grid; gap: 6px; font-weight: 650; font-size: 14px; }
+.dlg-field input, .dlg-field select, .dlg-field textarea { width: 100%; padding: 11px 12px; border: 1px solid var(--glass-line); border-radius: 12px; background: color-mix(in srgb, var(--bg, #fff) 80%, transparent); color: var(--text); font-size: 16px; font-family: inherit; }
+.dlg-field textarea { min-height: 260px; line-height: 1.6; resize: vertical; }
+.dlg-two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* ---------- schedule ---------- */
+.sch-next { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border-radius: 18px; margin-bottom: 14px; background: linear-gradient(125deg, color-mix(in srgb, var(--t-blue) 18%, var(--panel, #fff)), color-mix(in srgb, var(--accent, #08a88a) 16%, var(--panel, #fff))); border: 1px solid var(--glass-line); box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-hi); }
+.sch-next > div { flex: 1; min-width: 0; } .sch-next p { margin: 2px 0 0; } .sch-next b { overflow-wrap: anywhere; } .sch-next-ico, .sch-next.empty > span { font-size: 30px; }
