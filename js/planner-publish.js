@@ -41,8 +41,11 @@ function checkDue(){
  const due=dueTasks();if(!due.length)return;const seen=readSeen();let changed=false;
  for(const task of due){const key=dueKey(task);if(seen[key])continue;seen[key]=Date.now();changed=true;
   const body=(task.title||'Your planned post')+' is due now. Open Channel Studio to copy the post and publish it.';
-  try{if('Notification'in window&&Notification.permission==='granted'){const n=new Notification('⏰ Channel Studio posting alarm',{body,tag:'channel-studio-'+key,requireInteraction:true});n.onclick=()=>{try{window.focus()}catch(e){}window.location.href='planner.html';n.close()}}}catch(e){}
-  try{window.StudioNotify?.playTone?.(true)}catch(e){}
+  try{
+   if(window.StudioNotify?.send)window.StudioNotify.send('⏰ Channel Studio posting alarm',body,{tag:'channel-studio-'+key,url:'planner.html'});
+   else if('Notification'in window&&Notification.permission==='granted'){const n=new Notification('⏰ Channel Studio posting alarm',{body,tag:'channel-studio-'+key});n.onclick=()=>{try{window.focus()}catch(e){}window.location.href='planner.html';n.close()}}
+  }catch(e){}
+  try{if(!window.StudioNotify?.send)window.StudioNotify?.playTone?.(true)}catch(e){}
   window.studioToast?.('⏰ Posting time reached: '+(task.title||'Your planned post')+'. Copy it, publish it in WhatsApp, then confirm completion.');
  }
  if(changed)try{localStorage.setItem('channelStudioDuePostAlarms',JSON.stringify(seen))}catch(e){}
