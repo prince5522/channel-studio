@@ -20,42 +20,38 @@ function draftFromFields(){
  const season=Number($('rmSeason').value), supplied=$('rmNumber').value.trim();
  const number=supplied?Number(supplied):nextNumber(season);
  const text=$('rmText').value;
- return {id:newId(),season_number:season,episode_number:number,episode_name:$('rmTitle').value.trim(),episode_subtitle:$('rmSubtitle').value.trim(),episode_text:text,word_count:countWords(text),reading_time_min:readMins(text),content_rating:/\b(18\+|explicit|mature content)\b/i.test(text)?'18+':'general',source:'manual_ready_made',scheduled_post_at:null,reminder_enabled:false,reminder_channel:{push:true,in_app:true,whatsapp_sms:false},reminder_type:'one_off',status:'draft',posted_at:null,created_at:new Date().toISOString(),author_approved:false,auto_post_enabled:false,reminder_sent_at:null};
+ return {id:newId(),story_title:$('rmStoryTitle')?.value?.trim()||'',season_number:season,episode_number:number,episode_name:$('rmTitle').value.trim(),episode_subtitle:$('rmSubtitle').value.trim(),episode_text:text,word_count:countWords(text),reading_time_min:readMins(text),content_rating:/\b(18\+|explicit|mature content)\b/i.test(text)?'18+':'general',source:'manual_ready_made',scheduled_post_at:null,reminder_enabled:false,reminder_channel:{push:true,in_app:true,whatsapp_sms:false},reminder_type:'one_off',status:'draft',posted_at:null,created_at:new Date().toISOString(),author_approved:false,auto_post_enabled:false,reminder_sent_at:null};
 }
 function updateMetrics(){const t=$('rmText').value; $('rmWordCount').textContent=countWords(t).toLocaleString()+' words'; $('rmReadTime').textContent=readMins(t)+' min read';}
 function setFormBlank(){ $('rmForm').reset();$('rmSeason').value='1';$('rmWordCount').textContent='0 words';$('rmReadTime').textContent='0 min read';editingId=null; }
 function render(){
  const all=get(); const fs=$('rmFilterSeason')?.value||'all', fst=$('rmFilterStatus')?.value||'all';
  const seasons=[...new Set(all.map(x=>Number(x.season_number)||1))].sort((a,b)=>a-b);
- const sel=$('rmFilterSeason'); if(sel){const old=sel.value;sel.innerHTML='<option value="all">All seasons</option>'+seasons.map(n=>`<option value="${n}">Season ${n}</option>`).join('');sel.value=seasons.includes(Number(old))?old:'all';}
- const shown=all.filter(x=>(fs==='all'||Number(x.season_number)===Number(fs))&&(fst==='all'||x.status===fst)).sort((a,b)=>(a.season_number-b.season_number)||(a.episode_number-b.episode_number));
+ const sel=$('rmFilterSeason');if(sel){const old=sel.value;sel.innerHTML='<option value="all">All seasons</option>'+seasons.map(n=>`<option value="${n}">Season ${n}</option>`).join('');sel.value=seasons.includes(Number(old))?old:'all';}
+ const shown=all.filter(x=>(fs==='all'||Number(x.season_number)===Number(fs))&&(fst==='all'||x.status===fst)).sort((a,b)=>(String(a.story_title||a.storyName||'Ready-made episodes').localeCompare(String(b.story_title||b.storyName||'Ready-made episodes')))||(Number(a.season_number)-Number(b.season_number))||(Number(a.episode_number)-Number(b.episode_number)));
  const el=$('rmEpisodeList');
  if(!shown.length){el.innerHTML='<div class="empty-state">No ready-made episodes match this filter. Add one above or change the filter.</div>';return}
- let lastSeason=null, out='';
- shown.forEach(ep=>{
-  if(lastSeason!==ep.season_number){lastSeason=ep.season_number;out+=`<h3 class="rm-season-heading">Season ${ep.season_number} · ${shown.filter(x=>x.season_number===ep.season_number).length} episode(s)</h3>`}
-  const title=ep.episode_name||`Episode ${ep.episode_number}`;
-  const status=ep.status||'draft';
-  const preview=(ep.episode_text||'').slice(0,260);
-  out+=`<article class="rm-episode" data-ep-id="${esc(ep.id)}">
-   <div class="rm-episode-head"><div><h3>Ep ${esc(ep.episode_number)} · ${esc(title)}</h3><p class="muted">${esc(ep.episode_subtitle||'No subtitle provided')}</p></div><span class="rm-pill ${esc(status)}">${esc(status)}</span></div>
-   <div class="rm-meta"><span>Season ${esc(ep.season_number)}</span><span>· ${Number(ep.word_count)||countWords(ep.episode_text)} words</span><span>· ${Number(ep.reading_time_min)||readMins(ep.episode_text)} min read</span><span>· ${esc(ep.content_rating||'general')}</span></div>
-   <p>${esc(preview)}${(ep.episode_text||'').length>260?'…':''}</p>
-   <p class="small muted">${status==='posted'?'Posted '+formatDate(ep.posted_at):status==='scheduled'?'Scheduled '+formatDate(ep.scheduled_post_at)+' · Reminder '+(ep.reminder_enabled?'on':'off'):'Draft · not visible to readers'}</p>
-   <div class="rm-episode-actions">
-    <button class="button ghost" data-action="edit">Edit</button>
-    <button class="button ghost" data-action="schedule">Schedule / remind</button>
-    <button class="button ghost" data-action="reminder">${ep.reminder_enabled?'Turn reminder off':'Turn reminder on'}</button>
-    <button class="button ghost" data-action="share">Prepare post</button>
-    <button class="button ghost" data-action="posted">${status==='posted'?'Unpublish':'Mark posted'}</button>
-    <button class="button ghost" data-action="duplicate">Duplicate</button>
-    <button class="button ghost" data-action="delete">Delete</button>
-   </div>
-   <div class="rm-edit-panel" hidden></div>
-  </article>`;
- });
+ const groups=new Map();
+ shown.forEach(ep=>{const story=String(ep.story_title||ep.storyName||'Ready-made episodes').trim()||'Ready-made episodes';if(!groups.has(story))groups.set(story,[]);groups.get(story).push(ep)});
+ let out='';
+ for(const [story,items] of groups){
+  out+=`<section class="rm-story-folder"><h2 class="rm-season-heading">📁 ${esc(story)} <span class="muted">${items.length} episode${items.length===1?'':'s'}</span></h2>`;
+  let lastSeason=null;
+  items.forEach(ep=>{
+   if(lastSeason!==ep.season_number){lastSeason=ep.season_number;out+=`<h3 class="rm-season-heading">Season ${esc(ep.season_number)} · ${items.filter(x=>Number(x.season_number)===Number(ep.season_number)).length} episode(s)</h3>`}
+   const title=ep.episode_name||`Episode ${ep.episode_number}`,status=ep.status||'draft',preview=(ep.episode_text||'').slice(0,260);
+   out+=`<article class="rm-episode tilt-card" data-ep-id="${esc(ep.id)}">
+    <div class="rm-episode-head"><div><h3>Ep ${esc(ep.episode_number)} · ${esc(title)}</h3><p class="muted">${esc(ep.episode_subtitle||'No subtitle provided')}</p></div><span class="rm-pill ${esc(status)}">${esc(status)}</span></div>
+    <div class="rm-meta"><span>Season ${esc(ep.season_number)}</span><span>· ${Number(ep.word_count)||countWords(ep.episode_text)} words</span><span>· ${Number(ep.reading_time_min)||readMins(ep.episode_text)} min read</span><span>· ${esc(ep.content_rating||'general')}</span></div>
+    <p>${esc(preview)}${(ep.episode_text||'').length>260?'…':''}</p>
+    <p class="small muted">${status==='posted'?'Posted '+formatDate(ep.posted_at):status==='scheduled'?'Scheduled '+formatDate(ep.scheduled_post_at)+' · Reminder '+(ep.reminder_enabled?'on':'off'):'Draft · not visible to readers'}</p>
+    <div class="rm-episode-actions"><button class="button ghost" data-action="edit">Edit</button><button class="button ghost" data-action="schedule">Schedule / remind</button><button class="button ghost" data-action="reminder">${ep.reminder_enabled?'Turn reminder off':'Turn reminder on'}</button><button class="button ghost" data-action="share">Prepare post</button><button class="button ghost" data-action="posted">${status==='posted'?'Unpublish':'Mark posted'}</button><button class="button ghost" data-action="duplicate">Duplicate</button><button class="button ghost" data-action="delete">Delete</button></div><div class="rm-edit-panel" hidden></div></article>`;
+  });
+  out+='</section>';
+ }
  el.innerHTML=out;
 }
+
 function saveOne(ep){const a=get();const i=a.findIndex(x=>x.id===ep.id);if(i<0)a.push(ep);else a[i]=ep;set(a);render();}
 function parseMarkerText(text){
  const normalized=String(text||'').replace(/\r\n?/g,'\n');
@@ -103,6 +99,7 @@ function editPanel(card,ep){
  const p=card.querySelector('.rm-edit-panel');p.hidden=false;p.innerHTML=`<div class="rm-edit-grid">
  <label>Season<input type="number" min="1" data-edit="season" value="${esc(ep.season_number)}"></label>
  <label>Episode number<input type="number" min="1" data-edit="number" value="${esc(ep.episode_number)}"></label>
+ <label class="full">Story title / folder<input type="text" data-edit="story_title" value="${esc(ep.story_title||ep.storyName||'')}"></label>
  <label class="full">Title<input type="text" data-edit="title" value="${esc(ep.episode_name||'')}"></label>
  <label class="full">Subtitle<input type="text" data-edit="subtitle" value="${esc(ep.episode_subtitle||'')}"></label>
  <label class="full">Text<textarea data-edit="text">${esc(ep.episode_text||'')}</textarea></label>
@@ -168,7 +165,7 @@ $('rmEpisodeList').addEventListener('click',async e=>{
   const p=card.querySelector('.rm-edit-panel');const val=k=>p.querySelector(`[data-edit="${k}"]`).value;
   const season=Number(val('season')),number=Number(val('number')),text=val('text');
   if(season<1||number<1||!text.trim()){toast('Season, episode number and text are required.');return}
-  ep.season_number=season;ep.episode_number=number;ep.episode_name=val('title').trim();ep.episode_subtitle=val('subtitle').trim();ep.episode_text=text;ep.word_count=countWords(text);ep.reading_time_min=readMins(text);ep.content_rating=/\b(18\+|explicit|mature content)\b/i.test(text)?'18+':'general';saveOne(ep);toast('Episode updated.');break}
+  ep.story_title=val('story_title').trim();ep.season_number=season;ep.episode_number=number;ep.episode_name=val('title').trim();ep.episode_subtitle=val('subtitle').trim();ep.episode_text=text;ep.word_count=countWords(text);ep.reading_time_min=readMins(text);ep.content_rating=/\b(18\+|explicit|mature content)\b/i.test(text)?'18+':'general';saveOne(ep);toast('Episode updated.');break}
  case 'schedule':scheduleEpisode(ep);break;
  case 'reminder':ep.reminder_enabled=!ep.reminder_enabled;if(ep.reminder_enabled&&ep.scheduled_post_at&&ep.status==='draft')ep.status='scheduled';if(!ep.reminder_enabled&&ep.status==='scheduled'&&!ep.scheduled_post_at)ep.status='draft';saveOne(ep);toast('Reminder '+(ep.reminder_enabled?'enabled':'disabled')+'.');break;
  case 'share':await shareEpisode(ep);break;
